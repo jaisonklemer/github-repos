@@ -4,18 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import com.klemer.githubrepos.R
-import com.klemer.githubrepos.repositories.GithubRepository
-import com.klemer.githubrepos.view.fragments.FiltersDialogFragment
 import com.klemer.githubrepos.view.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
+    private var mainFragment = MainFragment.newInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root_container, MainFragment.newInstance())
+                .replace(R.id.root_container, mainFragment)
                 .commitNow()
         }
     }
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.btnFilter -> {
-                FiltersDialogFragment.newInstance().show(supportFragmentManager, "")
+                mainFragment.showFilters()
                 true
             }
             else -> super.onOptionsItemSelected(item)

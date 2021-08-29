@@ -3,4 +3,6 @@
     <string name="filters">Filters</string>
     <string name="filters_description">Use advanced filters to search repositories</string>
     <string name="filters_title">Filters</string>
+    <string name="filter">Filter</string>
+    <string name="language">Language</string>
 </resources>

@@ -5,15 +5,16 @@ import com.klemer.githubrepos.BuildConfig
 import com.klemer.githubrepos.database.AppDatabase
 import com.klemer.githubrepos.endpoints.GithubEndpoints
 import com.klemer.githubrepos.models.GithubLanguages
+import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.services.RetrofitService
+import com.klemer.githubrepos.singletons.APICount
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class GithubRepository {
-
-//    private val api = RetrofitService().getInstance("")
 
     fun getAllLanguages(callback: (List<GithubLanguages>) -> Unit) {
         val api = RetrofitService().getInstance(BuildConfig.GITHUB_LANGS_URL)
@@ -45,6 +46,26 @@ class GithubRepository {
     fun getAllLanguages(context: Context): List<GithubLanguages> {
         val dao = AppDatabase.getDatabase(context).languageDAO()
         return dao.getAll()
+    }
+
+    fun getRepositories(language: String, callback: (RepositoryResponse) -> Unit) {
+        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
+            .create(GithubEndpoints::class.java)
+
+        api.getRepositories("language:${language}", APICount.page)
+            .enqueue(object : Callback<RepositoryResponse> {
+                override fun onResponse(
+                    call: Call<RepositoryResponse>,
+                    response: Response<RepositoryResponse>
+                ) {
+                    response.body()?.let { callback(it) }
+                }
+
+                override fun onFailure(call: Call<RepositoryResponse>, t: Throwable) {
+                    println(t.localizedMessage)
+                }
+
+            })
     }
 
 }
