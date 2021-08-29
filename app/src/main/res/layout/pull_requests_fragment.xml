@@ -6,10 +6,15 @@
     android:background="@color/outer_space"
     tools:context=".view.fragments.PullRequestsFragment">
 
+    <include
+        android:id="@+id/animation"
+        layout="@layout/github_animation_layout"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPullRequests"
         android:layout_width="match_parent"
-        tools:listitem="@layout/list_item_repo_info"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_item_repo_info" />
 
 </FrameLayout>

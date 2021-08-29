@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.IssuesFragment">
 
-    <TextView
+    <include
+        android:id="@+id/animation"
+        layout="@layout/github_animation_layout"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewIssues"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        tools:listitem="@layout/list_item_repo_info" />
 
 </FrameLayout>

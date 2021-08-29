@@ -1,5 +1,6 @@
 package com.klemer.githubrepos.view.fragments
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,11 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.adapters.DetailListAdapter
 import com.klemer.githubrepos.databinding.PullRequestsFragmentBinding
+import com.klemer.githubrepos.interfaces.IssueOrPullRequestClickListener
 import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.view.activities.WebViewActivity
 import com.klemer.githubrepos.viewmodels.PullRequestsViewModel
 
-class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment) {
+class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment),
+    IssueOrPullRequestClickListener {
 
     companion object {
         fun newInstance() = PullRequestsFragment()
@@ -21,7 +25,7 @@ class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment) {
 
     private lateinit var viewModel: PullRequestsViewModel
     private lateinit var binding: PullRequestsFragmentBinding
-    private val pullAdapter = DetailListAdapter()
+    private val pullAdapter = DetailListAdapter(this)
     private lateinit var gitUsername: String
     private lateinit var gitRepoName: String
 
@@ -34,7 +38,10 @@ class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment) {
     }
 
     private var pullRequestObserver = Observer<List<RepoInfoModel>> {
-        pullAdapter.update(it)
+        if (it.isNotEmpty())
+            pullAdapter.update(it)
+        else
+            loadAnimation()
     }
 
 
@@ -59,6 +66,17 @@ class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment) {
     private fun setupRecyclerView() {
         binding.recyclerViewPullRequests.adapter = pullAdapter
         binding.recyclerViewPullRequests.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun loadAnimation() {
+        binding.animation.root.visibility = View.VISIBLE
+    }
+
+    override fun onItemClick(item: RepoInfoModel) {
+        val act = Intent(requireContext(), WebViewActivity::class.java)
+        act.putExtra("url", item.url)
+        act.putExtra("title", item.title)
+        startActivity(act)
     }
 
 }

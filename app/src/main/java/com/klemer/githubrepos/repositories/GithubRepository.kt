@@ -91,4 +91,28 @@ class GithubRepository {
             })
     }
 
+    fun getIssues(
+        gitUser: String,
+        repositoryName: String,
+        callback: (List<RepoInfoModel>) -> Unit
+    ) {
+        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
+            .create(GithubEndpoints::class.java)
+
+        api.getIssues(gitUser, repositoryName)
+            .enqueue(object : Callback<List<RepoInfoModel>> {
+                override fun onResponse(
+                    call: Call<List<RepoInfoModel>>,
+                    response: Response<List<RepoInfoModel>>
+                ) {
+                    response.body()?.let { callback(it) }
+                }
+
+                override fun onFailure(call: Call<List<RepoInfoModel>>, t: Throwable) {
+                    println(t.localizedMessage)
+                }
+
+            })
+    }
+
 }

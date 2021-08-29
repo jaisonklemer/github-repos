@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.databinding.ListItemRepoInfoBinding
+import com.klemer.githubrepos.interfaces.IssueOrPullRequestClickListener
 import com.klemer.githubrepos.models.RepoInfoModel
 
-class DetailListAdapter() :
+class DetailListAdapter(private val click: IssueOrPullRequestClickListener) :
     RecyclerView.Adapter<DetailListViewHolder>() {
 
     private var data = mutableListOf<RepoInfoModel>()
@@ -22,6 +23,7 @@ class DetailListAdapter() :
 
     override fun onBindViewHolder(holder: DetailListViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener { click.onItemClick(data[position]) }
     }
 
     override fun getItemCount() = data.size

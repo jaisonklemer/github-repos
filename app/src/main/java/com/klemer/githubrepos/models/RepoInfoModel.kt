@@ -10,7 +10,7 @@ data class RepoInfoModel(
     @SerializedName("body")
     val description: String,
 
-    @SerializedName("url")
+    @SerializedName("html_url")
     val url: String,
 
     @SerializedName("user")

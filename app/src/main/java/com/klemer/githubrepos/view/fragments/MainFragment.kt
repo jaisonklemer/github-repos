@@ -152,7 +152,7 @@ class MainFragment : Fragment(R.layout.main_fragment), RepositoryClickListener {
         startActivity(act)
     }
 
-    fun changeActivityTitle() {
+    private fun changeActivityTitle() {
         (requireActivity() as MainActivity).changeAppBarTitle("Repos in $selectedLang")
     }
 

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubRepos">
         <activity
+            android:name=".view.activities.WebViewActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.activities.RepositoryDetailsActivity"
             android:exported="true" />
         <activity
