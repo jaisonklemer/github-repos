@@ -5,11 +5,10 @@ import com.klemer.githubrepos.BuildConfig
 import com.klemer.githubrepos.database.AppDatabase
 import com.klemer.githubrepos.endpoints.GithubEndpoints
 import com.klemer.githubrepos.models.GithubLanguages
-import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.services.RetrofitService
 import com.klemer.githubrepos.singletons.APICount
-import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,6 +61,30 @@ class GithubRepository {
                 }
 
                 override fun onFailure(call: Call<RepositoryResponse>, t: Throwable) {
+                    println(t.localizedMessage)
+                }
+
+            })
+    }
+
+    fun getPullRequests(
+        gitUser: String,
+        repositoryName: String,
+        callback: (List<RepoInfoModel>) -> Unit
+    ) {
+        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
+            .create(GithubEndpoints::class.java)
+
+        api.getPullRequests(gitUser, repositoryName)
+            .enqueue(object : Callback<List<RepoInfoModel>> {
+                override fun onResponse(
+                    call: Call<List<RepoInfoModel>>,
+                    response: Response<List<RepoInfoModel>>
+                ) {
+                    response.body()?.let { callback(it) }
+                }
+
+                override fun onFailure(call: Call<List<RepoInfoModel>>, t: Throwable) {
                     println(t.localizedMessage)
                 }
 

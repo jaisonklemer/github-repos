@@ -1,5 +1,6 @@
 package com.klemer.githubrepos.view.fragments
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,12 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.klemer.githubrepos.adapters.RepoListAdapter
 import com.klemer.githubrepos.extensions.hideKeyboard
+import com.klemer.githubrepos.interfaces.RepositoryClickListener
 import com.klemer.githubrepos.models.GithubLanguages
+import com.klemer.githubrepos.models.Repository
 import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.singletons.APICount
+import com.klemer.githubrepos.view.activities.MainActivity
+import com.klemer.githubrepos.view.activities.RepositoryDetailsActivity
 
 
-class MainFragment : Fragment(R.layout.main_fragment) {
+class MainFragment : Fragment(R.layout.main_fragment), RepositoryClickListener {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -29,7 +34,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainFragmentBinding
-    private val repoAdapter = RepoListAdapter()
+    private val repoAdapter = RepoListAdapter(this)
     private var selectedLang = "Kotlin"
 
     private val repositoriesObserver = Observer<RepositoryResponse> {
@@ -38,6 +43,9 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             repoAdapter.update(it.repositories.toMutableList(), false)
         else
             repoAdapter.update(it.repositories.toMutableList(), true)
+
+        changeActivityTitle()
+
     }
 
     private val languagesObserver = Observer<List<GithubLanguages>> {
@@ -136,5 +144,17 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             }
         })
     }
+
+    override fun onRepositoryItemClick(repository: Repository) {
+        val act = Intent(requireContext(), RepositoryDetailsActivity::class.java)
+        act.putExtra("gitUser", repository.user.name)
+        act.putExtra("gitRepo", repository.name)
+        startActivity(act)
+    }
+
+    fun changeActivityTitle() {
+        (requireActivity() as MainActivity).changeAppBarTitle("Repos in $selectedLang")
+    }
+
 
 }

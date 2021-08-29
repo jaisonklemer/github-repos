@@ -1,12 +1,11 @@
 package com.klemer.githubrepos.view.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.view.fragments.MainFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private var mainFragment = MainFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,5 +34,9 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun changeAppBarTitle(title: String) {
+        supportActionBar?.title = title
     }
 }

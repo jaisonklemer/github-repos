@@ -1,7 +1,7 @@
 package com.klemer.githubrepos.endpoints
 
 import com.klemer.githubrepos.models.GithubLanguages
-import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.models.RepositoryResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -18,4 +18,16 @@ interface GithubEndpoints {
         @Query("q") language: String,
         @Query("page") page: Int
     ): Call<RepositoryResponse>
+
+    @GET("/repos/{user}/{repo_name}/pulls")
+    fun getPullRequests(
+        @Path("user") user: String,
+        @Path("repo_name") repoName: String
+    ): Call<List<RepoInfoModel>>
+
+    @GET("/repos/{user}/{repo_name}/issues")
+    fun getIssues(
+        @Path("user") user: String,
+        @Path("repo_name") repoName: String
+    ): Call<List<RepoInfoModel>>
 }
