@@ -1,11 +1,18 @@
 package com.klemer.githubrepos.endpoints
 
 import com.klemer.githubrepos.models.GithubLanguages
+import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.models.RepositoryResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GithubEndpoints {
 
     @GET("jaisonklemer/419b11e5ee94d7b01760693c2410feb3/raw/4a5d8097ad9f252d14747f686921470fb802db0d/githublanguages.json")
-    fun getAllLanguages() : Call<List<GithubLanguages>>
+    fun getAllLanguages(): Call<List<GithubLanguages>>
+
+    @GET("search/repositories")
+    fun getRepositories(@Query("q") language: String): Call<RepositoryResponse>
 }

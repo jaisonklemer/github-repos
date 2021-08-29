@@ -16,6 +16,9 @@ import com.klemer.githubrepos.viewmodels.MainViewModel
 
 import android.widget.AutoCompleteTextView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.klemer.githubrepos.adapters.RepoListAdapter
+import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.view.activities.MainActivity
 
 
@@ -27,6 +30,11 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainFragmentBinding
+    private val repoAdapter = RepoListAdapter()
+
+    private val repositoriesObserver = Observer<RepositoryResponse> {
+        repoAdapter.update(it.repositories.toMutableList())
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +42,17 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         binding = MainFragmentBinding.bind(view)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.repositoriesList.observe(viewLifecycleOwner, repositoriesObserver)
+
+        setupRecyclerView()
+
+        viewModel.getRepositories()
+    }
+
+    private fun setupRecyclerView() {
+        binding.repositoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.repositoriesRecyclerView.adapter = repoAdapter
+
     }
 
 }
