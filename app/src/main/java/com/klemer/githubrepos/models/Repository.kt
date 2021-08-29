@@ -24,7 +24,10 @@ data class Repository(
     val description: String,
 
     @SerializedName("owner")
-    val user: User
+    val user: User,
+
+    @SerializedName("language")
+    val language: String
 )
 
 data class User(

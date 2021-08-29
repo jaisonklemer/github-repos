@@ -8,6 +8,7 @@ import com.klemer.githubrepos.models.GithubLanguages
 import com.klemer.githubrepos.models.Repository
 import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.services.RetrofitService
+import com.klemer.githubrepos.singletons.APICount
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,23 +48,24 @@ class GithubRepository {
         return dao.getAll()
     }
 
-    fun getRepositories(callback: (RepositoryResponse) -> Unit) {
+    fun getRepositories(language: String, callback: (RepositoryResponse) -> Unit) {
         val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
             .create(GithubEndpoints::class.java)
 
-        api.getRepositories("language:Kotlin").enqueue(object : Callback<RepositoryResponse> {
-            override fun onResponse(
-                call: Call<RepositoryResponse>,
-                response: Response<RepositoryResponse>
-            ) {
-                response.body()?.let { callback(it) }
-            }
+        api.getRepositories("language:${language}", APICount.page)
+            .enqueue(object : Callback<RepositoryResponse> {
+                override fun onResponse(
+                    call: Call<RepositoryResponse>,
+                    response: Response<RepositoryResponse>
+                ) {
+                    response.body()?.let { callback(it) }
+                }
 
-            override fun onFailure(call: Call<RepositoryResponse>, t: Throwable) {
-                println(t.localizedMessage)
-            }
+                override fun onFailure(call: Call<RepositoryResponse>, t: Throwable) {
+                    println(t.localizedMessage)
+                }
 
-        })
+            })
     }
 
 }

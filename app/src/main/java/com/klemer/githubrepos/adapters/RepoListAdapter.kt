@@ -1,14 +1,18 @@
 package com.klemer.githubrepos.adapters
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.databinding.ListItemRepositoryBinding
 import com.klemer.githubrepos.extensions.formatMin
 import com.klemer.githubrepos.models.Repository
+import com.klemer.githubrepos.view.fragments.MainFragment
 
 class RepoListAdapter : RecyclerView.Adapter<RepoListViewHolder>() {
     private var repoList = mutableListOf<Repository>()
@@ -25,9 +29,12 @@ class RepoListAdapter : RecyclerView.Adapter<RepoListViewHolder>() {
 
     override fun getItemCount() = repoList.size
 
-    fun update(newList: MutableList<Repository>) {
-        repoList.clear()
-        repoList = newList
+    fun update(newList: MutableList<Repository>, clearList: Boolean) {
+        if (clearList) {
+            repoList.clear()
+        }
+
+        repoList.addAll(newList)
         notifyDataSetChanged()
     }
 }
@@ -51,5 +58,18 @@ class RepoListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         binding.starsCount.text = repository.starsCount.formatMin()
         binding.forksCount.text = repository.forksCount.formatMin()
+
+        //Change view lang color
+        val unwrappedDrawable: Drawable =
+            binding.langColor.background
+        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable)
+
+        DrawableCompat.setTint(
+            wrappedDrawable,
+            Color.parseColor(MainFragment.languageColor)
+        )
+
+        binding.languageName.text = repository.language
+
     }
 }
