@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.databinding.ListItemRepositoryBinding
 import com.klemer.githubrepos.extensions.formatMin
+import com.klemer.githubrepos.interfaces.RepositoryClickListener
 import com.klemer.githubrepos.models.Repository
 import com.klemer.githubrepos.view.fragments.MainFragment
 
-class RepoListAdapter : RecyclerView.Adapter<RepoListViewHolder>() {
+class RepoListAdapter(private val itemClick: RepositoryClickListener) :
+    RecyclerView.Adapter<RepoListViewHolder>() {
     private var repoList = mutableListOf<Repository>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoListViewHolder {
 
@@ -25,6 +27,7 @@ class RepoListAdapter : RecyclerView.Adapter<RepoListViewHolder>() {
 
     override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
         holder.bind(repoList[position])
+        holder.itemView.setOnClickListener { itemClick.onRepositoryItemClick(repoList[position]) }
     }
 
     override fun getItemCount() = repoList.size

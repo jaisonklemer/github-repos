@@ -1,6 +1,7 @@
 package com.klemer.githubrepos.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RepositoryResponse(
     @SerializedName("items")
@@ -28,7 +29,7 @@ data class Repository(
 
     @SerializedName("language")
     val language: String
-)
+) : Serializable
 
 data class User(
     @SerializedName("avatar_url")

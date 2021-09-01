@@ -18,5 +18,7 @@
         <item name="boxStrokeColor">@color/cadet_blue</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="hintTextColor">@color/cadet_blue</item>
+        <item name="colorControlActivated">@color/cadet_blue</item>
+        <item name="android:colorActivatedHighlight">@color/cadet_blue</item>
     </style>
 </resources>
