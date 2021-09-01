@@ -1,16 +1,18 @@
 package com.klemer.githubrepos.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.klemer.githubrepos.models.GithubLanguages
 import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.repositories.GithubRepository
 import com.klemer.githubrepos.singletons.APICount
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-
-    val repository = GithubRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: GithubRepository
+) : ViewModel() {
 
     val repositoriesList = MutableLiveData<RepositoryResponse>()
 
@@ -24,20 +26,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getGithubLangs(context: Context) {
+    fun getGithubLangs() {
         repository.getAllLanguages { gitLangs ->
             languagesList.value = gitLangs
-            repository.insertLanguageIntoDB(context, gitLangs)
+            repository.insertLanguageIntoDB(gitLangs)
         }
     }
 
-    fun fetchAllLangsFromDB(context: Context) {
-        val languages = repository.getAllLanguages(context)
+    fun fetchAllLangsFromDB() {
+        val languages = repository.getAllLanguages()
 
         if (languages.isNotEmpty()) {
             languagesList.value = languages
         } else {
-            getGithubLangs(context)
+            getGithubLangs()
         }
 
     }

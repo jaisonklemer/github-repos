@@ -4,9 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.repositories.GithubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class IssuesViewModel : ViewModel() {
-    private val repository = GithubRepository()
+@HiltViewModel
+class IssuesViewModel @Inject constructor(
+    private val repository: GithubRepository
+) : ViewModel() {
 
     val issuesList = MutableLiveData<List<RepoInfoModel>>()
 

@@ -7,7 +7,9 @@ import com.klemer.githubrepos.models.Repository
 import com.klemer.githubrepos.view.fragments.IssuesFragment
 import com.klemer.githubrepos.view.fragments.MainFragment
 import com.klemer.githubrepos.view.fragments.PullRequestsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RepositoryDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityRepositoryDetailsBinding
     private lateinit var pagerAdapter: RepositoryDetailsPageAdapter

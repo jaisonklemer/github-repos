@@ -16,7 +16,9 @@ import com.klemer.githubrepos.interfaces.IssueOrPullRequestClickListener
 import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.view.activities.WebViewActivity
 import com.klemer.githubrepos.viewmodels.IssuesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class IssuesFragment : Fragment(R.layout.issues_fragment), IssueOrPullRequestClickListener {
 
     companion object {

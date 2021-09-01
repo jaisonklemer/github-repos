@@ -1,24 +1,23 @@
 package com.klemer.githubrepos.repositories
 
-import android.content.Context
-import com.klemer.githubrepos.BuildConfig
-import com.klemer.githubrepos.database.AppDatabase
+import com.klemer.githubrepos.database.dao.LanguagesDAO
 import com.klemer.githubrepos.endpoints.GithubEndpoints
 import com.klemer.githubrepos.models.GithubLanguages
 import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.models.RepositoryResponse
-import com.klemer.githubrepos.services.RetrofitService
 import com.klemer.githubrepos.singletons.APICount
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class GithubRepository {
+class GithubRepository @Inject constructor(
+    private val api: GithubEndpoints,
+    private val dao: LanguagesDAO
+
+) {
 
     fun getAllLanguages(callback: (List<GithubLanguages>) -> Unit) {
-        val api = RetrofitService().getInstance(BuildConfig.GITHUB_LANGS_URL)
-            .create(GithubEndpoints::class.java)
-
         api.getAllLanguages().enqueue(object : Callback<List<GithubLanguages>> {
             override fun onResponse(
                 call: Call<List<GithubLanguages>>,
@@ -36,20 +35,15 @@ class GithubRepository {
         })
     }
 
-    fun insertLanguageIntoDB(context: Context, languages: List<GithubLanguages>) {
-        val dao = AppDatabase.getDatabase(context).languageDAO()
-
+    fun insertLanguageIntoDB(languages: List<GithubLanguages>) {
         dao.insert(languages)
     }
 
-    fun getAllLanguages(context: Context): List<GithubLanguages> {
-        val dao = AppDatabase.getDatabase(context).languageDAO()
+    fun getAllLanguages(): List<GithubLanguages> {
         return dao.getAll()
     }
 
     fun getRepositories(language: String, callback: (RepositoryResponse) -> Unit) {
-        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
-            .create(GithubEndpoints::class.java)
 
         api.getRepositories("language:${language}", APICount.page)
             .enqueue(object : Callback<RepositoryResponse> {
@@ -72,9 +66,6 @@ class GithubRepository {
         repositoryName: String,
         callback: (List<RepoInfoModel>) -> Unit
     ) {
-        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
-            .create(GithubEndpoints::class.java)
-
         api.getPullRequests(gitUser, repositoryName)
             .enqueue(object : Callback<List<RepoInfoModel>> {
                 override fun onResponse(
@@ -96,8 +87,6 @@ class GithubRepository {
         repositoryName: String,
         callback: (List<RepoInfoModel>) -> Unit
     ) {
-        val api = RetrofitService().getInstance(BuildConfig.GITHUB_API_URL)
-            .create(GithubEndpoints::class.java)
 
         api.getIssues(gitUser, repositoryName)
             .enqueue(object : Callback<List<RepoInfoModel>> {

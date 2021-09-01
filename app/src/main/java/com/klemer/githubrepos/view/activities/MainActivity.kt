@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.*
 import com.klemer.githubrepos.R
 import com.klemer.githubrepos.view.fragments.MainFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private var mainFragment = MainFragment.newInstance()
 

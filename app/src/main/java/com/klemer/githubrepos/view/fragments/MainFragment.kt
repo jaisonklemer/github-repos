@@ -22,8 +22,9 @@ import com.klemer.githubrepos.models.RepositoryResponse
 import com.klemer.githubrepos.singletons.APICount
 import com.klemer.githubrepos.view.activities.MainActivity
 import com.klemer.githubrepos.view.activities.RepositoryDetailsActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment(R.layout.main_fragment), RepositoryClickListener {
 
     companion object {
@@ -67,7 +68,7 @@ class MainFragment : Fragment(R.layout.main_fragment), RepositoryClickListener {
     }
 
     private fun loadInitialData() {
-        viewModel.fetchAllLangsFromDB(requireContext())
+        viewModel.fetchAllLangsFromDB()
         viewModel.getRepositories(selectedLang)
     }
 
@@ -116,6 +117,7 @@ class MainFragment : Fragment(R.layout.main_fragment), RepositoryClickListener {
         resetCounts()
         viewModel.getRepositories(selectedLang)
     }
+
 
     private fun resetCounts() {
         APICount.page = 1

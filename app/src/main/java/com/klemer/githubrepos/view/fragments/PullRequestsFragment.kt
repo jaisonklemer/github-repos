@@ -15,7 +15,9 @@ import com.klemer.githubrepos.models.RepoInfoModel
 import com.klemer.githubrepos.models.Repository
 import com.klemer.githubrepos.view.activities.WebViewActivity
 import com.klemer.githubrepos.viewmodels.PullRequestsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PullRequestsFragment : Fragment(R.layout.pull_requests_fragment),
     IssueOrPullRequestClickListener {
 
