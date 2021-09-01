@@ -10,6 +10,7 @@ import com.klemer.githubrepos.databinding.ListItemRepoInfoBinding
 import com.klemer.githubrepos.interfaces.IssueOrPullRequestClickListener
 import com.klemer.githubrepos.models.RepoInfoModel
 
+//Adapter details
 class DetailListAdapter(private val click: IssueOrPullRequestClickListener) :
     RecyclerView.Adapter<DetailListViewHolder>() {
 
